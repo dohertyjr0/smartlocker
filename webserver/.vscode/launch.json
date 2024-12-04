@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "/Users/johnrossdoherty/Desktop/smartlocker/webserver",
+      "program": "/Users/johnrossdoherty/Desktop/smartlocker/webserver/build/Debug/outDebug"
+    }
+  ]
+}
