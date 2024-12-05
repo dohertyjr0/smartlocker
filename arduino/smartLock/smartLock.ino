@@ -107,11 +107,11 @@ void loop() {
 
   if (!locked && (millis() - lastUnlockTime > lockDelay)) {
     lockDoor();
-    displayMessage("Locker Locked", "");
+    displayLCD("Locker Locked", "");
   }
 }
 
-void displayMessage(const char* line1, const char* line2) {
+void displayLCD(const char* line1, const char* line2) {
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print(line1);
