@@ -4,7 +4,6 @@
 #include <Adafruit_PN532.h>
 #include "rgb_lcd.h"
 #include <WiFi.h>
-#include <FirebaseESP32.h>
 
 const char* SSID = "iPhone 12 Pro";
 const char* PASSWORD= "01234567";
@@ -27,8 +26,8 @@ byte rowPins[ROWS] = { 15, 2, 4, 23 };
 byte colPins[COLS] = { 17, 25, 26, 33 };
 
 Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
-Adafruit_PN532 nfc(PN532_SDA, PN532_SCL);
-Servo myServo;
+Adafruit_PN532 nfc(PN532_SDA, PN532_SCL);// passing arguments through Adafruit class
+Servo myServo; //called Servo class and created object, same for keypad and lcd
 
 rgb_lcd lcd;
 const int LCD_COLS = 16;
@@ -37,8 +36,8 @@ const int LCD_ROWS = 2;
 bool lockedServo = true;
 char enteredCode[5];
 int codeIndex = 0;
-String currentPassword = "1234";
-const String allowedUID = "3463953";
+String currentPassword = "1234"; //current password for keypad, can be changed in adminmode
+const String allowedUID = "3463953"; //hardcoded allowed NFC tag
 
 unsigned long lastUnlockTime = 0;
 unsigned long lastRFIDCheck = 0;
@@ -52,13 +51,6 @@ void setup() {
     Serial.println("Connecting to Wi-Fi...");
   }
   Serial.println("Connected to Wi-Fi");
-  Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
-
-  if (Firebase.setString(firebaseData, "/test", "Hello Firebase")) {
-    Serial.println("Data written successfully!");
-  } else {
-    Serial.println("Error writing to Firebase: " + firebaseData.errorReason());
-  }
   
   Wire.begin();
   myServo.attach(27);
@@ -80,7 +72,7 @@ void setup() {
     lcd.print("RFID Error!");
     while (1);  //Using while(1) to ensure loop is infinite until RFID reader is detected
   }
-  nfc.SAMConfig();  //Secure Access Module outside if(), ensures communciation between RFID & ESP32, ONLY when RFID is detected ie. while(1) loop breaks
+  nfc.SAMConfig();  //Secure Access Module config outside if(), ensures communciation between RFID & ESP32, ONLY when RFID is detected ie. while(1) loop breaks
   Serial.println("RFID reader initialized!");
   lcd.setCursor(0, 1);
   lcd.print("RFID Ready!");
@@ -99,7 +91,7 @@ void loop() {
   }
   //using built in c "millis()" function to track how long program has been run for
   if (millis() - lastRFIDCheck >= 2500) {
-    lastRFIDCheck = millis();
+    lastRFIDCheck = millis(); // by letting LastRFIDcheck = millis() function, it will constantlyy check every 2.5 seconds (2500milliseconds)
     Serial.println("Checking RFID...");
     checkRFID();
   }
