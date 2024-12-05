@@ -41,9 +41,8 @@ String currentPassword = "1234";
 const String allowedUID = "3463953";
 
 unsigned long lastUnlockTime = 0;
-const unsigned long lockDelay = 5000;
 unsigned long lastRFIDCheck = 0;
-const unsigned long rfidCheckInterval = 2000;
+
 
 void setup() {
   Serial.begin(115200);
@@ -81,7 +80,7 @@ void setup() {
     lcd.print("RFID Error!");
     while (1);  //Using while(1) to ensure loop is infinite until RFID reader is detected
   }
-  nfc.SAMConfig();  //Secure Access Module, ensures communciation between RFID & ESP32, ONLY when RFID is detected
+  nfc.SAMConfig();  //Secure Access Module outside if(), ensures communciation between RFID & ESP32, ONLY when RFID is detected ie. while(1) loop breaks
   Serial.println("RFID reader initialized!");
   lcd.setCursor(0, 1);
   lcd.print("RFID Ready!");
@@ -98,16 +97,16 @@ void loop() {
     Serial.println(key);
     handleKeypadInput(key);
   }
-
-  if (millis() - lastRFIDCheck >= rfidCheckInterval) {
+  //using built in c "millis()" function to track how long program has been run for
+  if (millis() - lastRFIDCheck >= 2500) {
     lastRFIDCheck = millis();
     Serial.println("Checking RFID...");
     checkRFID();
   }
 
-  if (!locked && (millis() - lastUnlockTime > lockDelay)) {
+  if (!locked && (millis() - lastUnlockTime > 100000)) {
     lockDoor();
-    displayLCD("Locker Locked", "");
+    displayLCD("Locked", "");
   }
 }
 
