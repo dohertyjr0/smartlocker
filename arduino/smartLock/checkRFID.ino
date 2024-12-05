@@ -11,17 +11,17 @@ void checkRFID() {
     Serial.println(scannedUID);
     if (scannedUID == allowedUID) {
       unlockDoor();
-      displayMessage("Access Granted", "Locker Unlocked");
+      displayLCD("Access Granted", "Locker Unlocked");
       lastUnlockTime = millis();
     } else if(scannedUID != allowedUID){
-      displayMessage("Card unauthorised", "Incorrect Lock");
+      displayLCD("Card unauthorised", "Incorrect Lock");
       delay(2000);
-      displayMessage("Welcome Back", "Door Locked");
+      displayLCD("Welcome Back", "Door Locked");
     }
     else{
-      displayMessage("Access Denied", "Invalid Tag");
+      displayLCD("Access Denied", "Invalid Tag");
       delay(2000);
-      displayMessage("Welcome Back", "Door Locked");
+      displayLCD("Welcome Back", "Door Locked");
     
     }
   }
