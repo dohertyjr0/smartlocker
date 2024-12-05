@@ -13,9 +13,9 @@ void handleKeypadInput(char key) {
       unlockDoor();
     } else {
       Serial.println("Incorrect PIN!");
-      displayMessage("Incorrect Pin!", "Try Again");
+      displayLCD("Incorrect Pin!", "Try Again");
       delay(2000);
-      displayMessage("Welcome Back", "Door Locked");
+      displayLCD("Welcome Back", "Door Locked");
     }
 
     memset(enteredCode, 0, sizeof(enteredCode));
