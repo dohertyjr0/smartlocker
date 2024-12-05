@@ -82,8 +82,7 @@ void setup() {
     Serial.println("RFID reader not detected!");
     lcd.clear();
     lcd.print("RFID Error!");
-    while (1)
-      ;  //Using while(1) to ensure loop is infinite until RFID reader is detected
+    while (1);  //Using while(1) to ensure loop is infinite until RFID reader is detected
   }
   nfc.SAMConfig();  //Secure Access Module, ensures communciation between RFID & ESP32, ONLY when RFID is detected
   Serial.println("RFID reader initialized!");
@@ -102,7 +101,6 @@ void loop() {
     Serial.println(key);
     handleKeypadInput(key);
   }
-
 
   if (millis() - lastRFIDCheck >= rfidCheckInterval) {
     lastRFIDCheck = millis();
