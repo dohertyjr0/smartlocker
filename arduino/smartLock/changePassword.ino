@@ -1,5 +1,5 @@
 void changePassword() {
-  displayMessage("Enter New PIN", "");
+  displayLCD("Enter New PIN", "");
   String newPassword = "";
 
   while (newPassword.length() < 4) {
@@ -12,7 +12,7 @@ void changePassword() {
   }
 
   currentPassword = newPassword;
-  displayMessage("PIN Changed", ""); 
+  displayLCD("PIN Changed", ""); 
   digitalWrite(YELLOW_LED_PIN, HIGH); 
   delay(1000);
   digitalWrite(YELLOW_LED_PIN, LOW);
