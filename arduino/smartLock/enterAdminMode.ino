@@ -2,7 +2,7 @@ void enterAdminMode() {
   char adminKey = '\0'; 
 
   while (true) {
-    displayMessage("Admin Mode", "1:Change PIN");
+    displayLCD("Admin Mode", "1:Change PIN");
     digitalWrite(RED_LED_PIN, LOW);   
     digitalWrite(WHITE_LED_PIN, LOW);  
     digitalWrite(YELLOW_LED_PIN, HIGH); 
@@ -18,11 +18,11 @@ void enterAdminMode() {
         break; 
       } else {
         Serial.println("Invalid Admin Option");
-        displayMessage("Invalid Option", "");
+        displayLCD("Invalid Option", "");
         delay(2000);
       }
     }
   }
 
-  displayMessage("Welcome Back", "Door Locked");
+  displayLCD("Welcome Back", "Door Locked");
 }
