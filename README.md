@@ -12,3 +12,7 @@ This is my first IoT based project making use of an RFID reader and tags, ESP32 
 
 ##Currently
 Working on implementing Firebase database with my webserver. Using HTML, CSS and JavaScript for frontend. 
+
+##Some References
+https://youtu.be/cm-Qe2HMJGk
+https://www.youtube.com/watch?v=pJLjFm4Ipro&pp=ygUgc2V0dGluZyB1cCBuZmMgcmZpZCByZWFkZXIgZXNwMzI%3D
