@@ -55,3 +55,21 @@ body, h1, h2, p {
     text-decoration: none;
     font-size: large;
   }
+  .box1{
+    background-color: grey;
+    float: left;
+    padding: 10px;
+    width: 250px;
+    height: 300px;
+    margin-top: 150px;
+    border: 1px;
+  }
+  .box2{
+    float: right;
+    padding: 10px;
+    width: 250px;
+    height: 300px;
+    margin-top: 150px;
+    border: 1px;
+    background-color: grey;
+  }
