@@ -1,21 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="homepage.css">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  <link rel="stylesheet" href="homepage.css">
 </head>
 <body>
+  <header>
+    <h1>Smart Locker System</h1>
+    <nav>
+      <a href = "homepage.html"> Home </a>
+      <a href = "Profile"> Profile </a>
+      <a href = "Contact"> Contact </a>
+      <a href = "About"> About </a>
+    </nav>
+  </header>
+
+  <main>
     <section id="landing" class="active">
-        <h1>Welcome to the Smart Locker System</h1>
-        <button id="start-btn" class="btn primary">Get Started</button>
-        <div class = "box1">
-          <h1> Last Open </h1>
+      <h1>Welcome to the Smart Locker System</h1>
+      <button id="start-btn" class="btn primary">Get Started</button>
+      <div class = "box1">
+        <h1> Last Open </h1>
+      </div>
+      <div class = "box2">
+        <h1> Last Closed </h1>
+      </div>
+    </section>
+
+    <section id="dashboard">
+      <h2>Below is where you can sign in</h2>
+        <div class = "login">
+          <p>box sign in</p>
         </div>
-        <div class = "box2">
-          <h1> Last Closed </h1>
-        </div>
-      </section>
+      <p id="status-msg"></p>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 Smart Locker System</p>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
