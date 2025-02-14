@@ -30,10 +30,17 @@
     </section>
 
     <section id="dashboard">
-      <h2>Below is where you can sign in</h2>
-        <div class = "login">
-          <p>box sign in</p>
-        </div>
+      <h2>Sign Up</h2>
+      <input type="email" id="signup-email" placeholder="Email">
+      <input type="password" id="sign-up password" placeholder="Password">
+      <button onclick="signup()" >Sign Up</button>
+
+      <h2>Sign In</h2>
+      <input type="email" id="sign-in email" placeholder="Email">
+      <input type="password" id="sign-in password" placeholder="Password">
+      <button onclick="signin()" >Sign In</button>
+
+      <button onclick="logout()">Log Out</button>
       <p id="status-msg"></p>
     </section>
   </main>

@@ -3,4 +3,7 @@
     document.getElementById('dashboard').classList.add('active');
   });
   
+  function signup(){
+    const email = document.getElementById('signup-email').value
+  }
   
