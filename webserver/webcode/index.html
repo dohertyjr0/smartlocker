@@ -9,42 +9,24 @@
 <body>
   <header>
     <h1>Smart Locker System</h1>
-    <nav>
-      <a href = "homepage.html"> Home </a>
-      <a href = "Profile"> Profile </a>
-      <a href = "Contact"> Contact </a>
-      <a href = "About"> About </a>
-    </nav>
   </header>
 
-  <main>
-    <section id="landing" class="active">
-      <h1>Welcome to the Smart Locker System</h1>
-      <button id="start-btn" class="btn primary">Get Started</button>
-      <div class = "box1">
-        <h1> Last Open </h1>
-      </div>
-      <div class = "box2">
-        <h1> Last Closed </h1>
-      </div>
-    </section>
+    <div id="lock-section">
+      <h3> Locker Last Unlocked: <span id="last-unlock">Loading...</span></h3>
+      <button onclick = "getStarted()">Get Started</button>
+    </div>
 
-    <section id="dashboard">
-      <h2>Sign Up</h2>
-      <input type="email" id="signup-email" placeholder="Email">
-      <input type="password" id="sign-up password" placeholder="Password">
-      <button onclick="signup()" >Sign Up</button>
+    <div id="rfid-section" class="hidden">
+      <h3> RFID Tags </h3>
+      <ul id="rfid-list"></ul>
+    </div>
 
-      <h2>Sign In</h2>
-      <input type="email" id="sign-in email" placeholder="Email">
-      <input type="password" id="sign-in password" placeholder="Password">
-      <button onclick="signin()" >Sign In</button>
-
-      <button onclick="logout()">Log Out</button>
-      <p id="status-msg"></p>
-    </section>
-  </main>
-
+    <div id="admin-login-section" class="hidden">
+      <h3> Admin Login </h3>
+      <input type="email" id="admin-email" placeholder="Email">
+      <input type="password" id="admin-password" placeholder="Password">
+      <button onclick="adminLogin()">Login</button>
+    </div>
   <footer>
     <p>&copy; 2024 Smart Locker System</p>
   </footer>
