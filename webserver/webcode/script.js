@@ -7,3 +7,6 @@
     const email = document.getElementById('signup-email').value
   }
   
+  function unlockLocker(){
+    document.getElementById("unlockLocker");
+  }
