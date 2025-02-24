@@ -12,3 +12,6 @@ function getStarted(){
     })
 }
   
+  function unlockLocker(){
+    document.getElementById("unlockLocker");
+  }

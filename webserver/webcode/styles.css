@@ -19,60 +19,32 @@ body, h1, h2, p {
     text-align: center;
     border: 10px, black;
   }
-  
+
+  #lock-section{
+    display: flex;
+    justify-content: center;
+  }
+
+  #admin-login-section{
+    display: flex;
+    justify-content: right;
+  }
+
+  #admin-controls{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   main {
     flex: 1;
     padding: 1rem;
   }
-  
-  footer {
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 1rem;
-  }
 
-  section {
-    display: none;
-    text-align: center;
-    margin-top: 2rem;
+  button{
+    font-family: 'Trebuchet MS';
+    padding: 10px 40px;
   }
   
-  section.active {
-    display: block;
-    font-size: 21px;
-  }
-
-  .btn.primary {
-    background-color: #007bff;
-    color: white;
-    width: 100px;
-    margin-top: 30px;
-  }
-
-  nav a{
-    color: white;
-    text-decoration: none;
-    font-size: large;
-  }
-  .box1{
-    background-color: grey;
-    float: left;
-    padding: 10px;
-    width: 250px;
-    height: 300px;
-    margin-top: 150px;
-    border: 1px;
-  }
-  .box2{
-    float: right;
-    padding: 10px;
-    width: 250px;
-    height: 300px;
-    margin-top: 150px;
-    border: 1px;
-    background-color: grey;
-  }
   .login{
     display: flex;
     align-items: center;
