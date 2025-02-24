@@ -3,7 +3,12 @@
     document.getElementById('dashboard').classList.add('active');
   });
   
-  function signup(){
-    const email = document.getElementById('signup-email').value
-  }
+function getStarted(){
+  auth.signInAnonymously()
+    .then(() => {
+      document.getElementById("rfid-section");
+      document.getElementById("public-section");
+      RFIDTags();
+    })
+}
   
