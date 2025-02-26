@@ -23,6 +23,7 @@ void checkRFID() {
       delay(2000);
       displayLCD("Welcome Back", "Door Locked");
     
+    //adding test comment for GitHub
     }
   }
 }
