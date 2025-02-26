@@ -4,9 +4,11 @@
 #include <Adafruit_PN532.h>
 #include "rgb_lcd.h"
 #include <WiFi.h>
+#include <WebServer.h>
 
 const char* SSID = "iPhone 12 Pro";
 const char* PASSWORD= "01234567";
+const char* ADMIN = "password";
 
 #define PN532_SDA 21
 #define PN532_SCL 22
@@ -51,6 +53,23 @@ void setup() {
     Serial.println("Connecting to Wi-Fi...");
   }
   Serial.println("Connected to Wi-Fi");
+
+  server.on("/", HTTP_GET, [](){
+    server.send(200, "text/html", webApp());
+  });
+
+  server.on("/toggle-lock", HTTP_GET, [](){
+    if(server.hasArg("password") && server.arg("password") == ADMIN){
+      lockDoor();
+      server.send(200, "text/plain", ServoLocked ? "Locked" : "Unlocked");
+    }
+    else{
+      server.send(403, "text/plain", "Incorrect Password");
+    }
+  });
+
+  server.begin();
+  Serial.println("Server has started: HTTP");
   
   Wire.begin();
   myServo.attach(27);
@@ -82,6 +101,8 @@ void setup() {
 }
 
 void loop() {
+
+  server.handleClient();
 
   char key = keypad.getKey();
   if (key) {
