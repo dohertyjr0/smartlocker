@@ -21,7 +21,13 @@
 </head>
 <body>
     <h1> ESP32 SmartLocker </h1>
-    <button onclick = "Lock()">Toggle Lock</button>
-    
+    <div id = "loginAdmin">
+    <input type="password" id="adm-pw" placeholder="Enter Admin Password">
+    <button onclick = "login()">Login</button>
+    </div>
+    <div id = "control" style = "display: none;">
+        <button onclick = "lock()"> Lock Servo </button>
+    </div>
+
 </body>
 </html>
