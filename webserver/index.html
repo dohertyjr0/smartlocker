@@ -29,5 +29,15 @@
         <button onclick = "lock()"> Lock Servo </button>
     </div>
 
+    <script>
+        function login(){
+            const password = document.getElementById('password').value;
+            var url = '/toggle-lock?password=' + encodeURIComponent(password);
+            fetch(url)
+            .then(response => response.text())
+            .then (data => alert(data))
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
 </body>
 </html>
