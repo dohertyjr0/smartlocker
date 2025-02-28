@@ -5,6 +5,9 @@
 #include "rgb_lcd.h"
 #include <WiFi.h>
 #include <WebServer.h>
+#include <WebSocketsServer.h>
+
+WebSocketsServer webSocket = WebSocketsServer(81);
 
 const char* SSID = "iPhone 12 Pro";
 const char* PASSWORD= "01234567";
@@ -46,6 +49,9 @@ unsigned long lastRFIDCheck = 0;
 //unsigned long was used, as "int" is too small to store the length of this programs runtime, i believe 32-33000(33 seconds). Which when calculating in ms ->
 //(runtime of program which can vary...) would result in integer overflow and a crashed program
 void setup() {
+  webSocket.begin();
+  webSocket.onEvent(webSocketEvent);
+  
   Serial.begin(115200);
   WiFi.begin(SSID, PASSWORD);
     while (WiFi.status() != WL_CONNECTED) {
