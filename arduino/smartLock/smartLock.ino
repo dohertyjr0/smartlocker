@@ -5,9 +5,8 @@
 #include "rgb_lcd.h"
 #include <WiFi.h>
 #include <WebServer.h>
-#include <WebSocketsServer.h>
 
-WebSocketsServer webSocket = WebSocketsServer(81);
+WebServer server(80);
 
 const char* SSID = "iPhone 12 Pro";
 const char* PASSWORD= "01234567";
@@ -49,8 +48,6 @@ unsigned long lastRFIDCheck = 0;
 //unsigned long was used, as "int" is too small to store the length of this programs runtime, i believe 32-33000(33 seconds). Which when calculating in ms ->
 //(runtime of program which can vary...) would result in integer overflow and a crashed program
 void setup() {
-  webSocket.begin();
-  webSocket.onEvent(webSocketEvent);
   
   Serial.begin(115200);
   WiFi.begin(SSID, PASSWORD);
@@ -59,19 +56,33 @@ void setup() {
     Serial.println("Connecting to Wi-Fi...");
   }
   Serial.println("Connected to Wi-Fi");
+  delay(500);
+  Serial.print("ESP32 IP Address: ");
+  Serial.println(WiFi.localIP());
 
   server.on("/", HTTP_GET, [](){
     server.send(200, "text/html", webApp());
   });
 
-  server.on("/toggle-lock", HTTP_GET, [](){
-    if(server.hasArg("password") && server.arg("password") == ADMIN){
-      lockDoor();
-      server.send(200, "text/plain", ServoLocked ? "Locked" : "Unlocked");
+  server.on("/admin-login", HTTP_GET, [](){
+    if(server.hasArg("password") && server.arg("password").equalsIgnoreCase(ADMIN)){
+      server.send(200, "text/plain", "Access Granted");
     }
     else{
       server.send(403, "text/plain", "Incorrect Password");
     }
+  });
+
+  server.on("/unlock", HTTP_GET, [](){
+    lockedServo = false;
+    unlockDoor();
+    server.send(200, "text/plain", "Unlocked");
+  });
+
+  server.on("/lock", HTTP_GET, [](){
+    lockedServo = true;
+    lockDoor();
+    server.send(200, "text/plain", "Locked");
   });
 
   server.begin();
@@ -115,15 +126,16 @@ void loop() {
     Serial.print("Key Pressed: ");
     Serial.println(key);
     handleKeypadInput(key);
+    yield();
   }
   //using built in c "millis()" function to track how long program has been run for
   if (millis() - lastRFIDCheck >= 2500) {
     lastRFIDCheck = millis(); // by letting LastRFIDcheck = millis() function, it will constantlyy check every 2.5 seconds (2500milliseconds)
-    Serial.println("Checking RFID...");
     checkRFID();
+    yield();
   }
 
-  if (!locked && (millis() - lastUnlockTime > 100000)) {
+  if (!lockedServo && (millis() - lastUnlockTime > 100000)) {
     lockDoor();
     displayLCD("Locked", "");
   }
@@ -139,7 +151,7 @@ void displayLCD(const char* line1, const char* line2) {
 
 void unlockDoor() {
   lockedServo = false;
-  myServo.write(270);
+  myServo.write(0);
   digitalWrite(RED_LED_PIN, LOW);
   digitalWrite(WHITE_LED_PIN, HIGH);
   digitalWrite(YELLOW_LED_PIN, LOW);

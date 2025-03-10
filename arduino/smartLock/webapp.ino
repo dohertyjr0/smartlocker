@@ -27,16 +27,45 @@ String webApp(){
     <button onclick = "login()">Login</button>
     </div>
     <div id = "control" style = "display: none;">
+        <h2> Status: <span id="lockStatus">Locked</span></h2>
         <button onclick = "lock()"> Lock Servo </button>
+        <button onclick = "unlock()"> Unlock Servo </button>
     </div>
 
     <script>
         function login(){
-            const password = document.getElementById('password').value;
-            var url = '/toggle-lock?password=' + encodeURIComponent(password);
-            fetch(url)
+            const password = document.getElementById('adm-pw').value;
+            
+            fetch(`/admin-login?password=${encodeURIComponent(password)}`)
             .then(response => response.text())
-            .then (data => alert(data))
+            .then (data => {
+              if(data.includes("Access Granted")){
+                document.getElementById("loginAdmin").style.display = "none";
+                document.getElementById("control").style.display = "block";
+              }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function unlock(){
+          let startTime = performance.now();
+          fetch('/unlock')
+          .then(() => {
+            document.getElementById("lockStatus").innerText = "Unlocked";
+            lastMoved = performance.now() - startTime;
+            console.log(`Unlock Time: ${lastMoved.toFixed(2)} ms`);
+          })
+          .catch(error => console.error('Error:', error));
+        }
+
+        function lock(){
+            let startTime = performance.now();
+            fetch('/lock')
+            .then(() => {
+              document.getElementById("lockStatus").innerText = "Locked";
+              lastMoved = performance.now() - startTime;
+              console.log(`Lock Time: ${lastMoved.toFixed(2)} ms`);
+            })
             .catch(error => console.error('Error:', error));
         }
     </script>
