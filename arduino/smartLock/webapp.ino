@@ -32,6 +32,8 @@ String webApp(){
         <button onclick = "unlock()"> Unlock Servo </button>
     </div>
 
+    <h3>Last RFID Tag: <span id = "rfidUID"> None </span><h3>
+
     <script>
         function login(){
             const password = document.getElementById('adm-pw').value;
@@ -68,6 +70,15 @@ String webApp(){
             })
             .catch(error => console.error('Error:', error));
         }
+
+        function fetchRFID(){
+          fetch('/scannedUID')
+          .then(response => response.text())
+          .then(data => document.getElementbyID("rfidUID")).innerText = data)
+          .catch(error => console.error('Error:', error));
+        }
+
+        setInterval(fetchRFID,5000);
     </script>
 </body>
 </html>)rawliteral";
