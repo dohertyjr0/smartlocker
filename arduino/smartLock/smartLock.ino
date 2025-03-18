@@ -8,8 +8,8 @@
 
 WebServer server(80);
 
-const char* SSID = "iPhone 12 Pro";
-const char* PASSWORD = "01234567";
+const char* SSID = "HUAWEI-2.4G-ZUSW";
+const char* PASSWORD = "pjMs5P5h";
 const char* ADMIN = "password";
 
 #define PN532_SDA 21
@@ -66,7 +66,7 @@ void setup() {
   });
 
   server.on("/scannedUID", HTTP_GET, []() {
-    server.send(200, "text/html", scannedUID);
+    server.send(200, "text/plain", scannedUID);
   });
 
   server.on("/admin-login", HTTP_GET, []() {

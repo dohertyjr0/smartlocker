@@ -2,7 +2,7 @@ void checkRFID() {
   uint8_t uid[7];
   uint8_t uidLength;
 // used readMifareClassic example from RFID library
-  if (nfc.readPassiveTargetID(PN532_MIFARE_ISO14443A, uid, &uidLength, 50)) { //50 in this case indicates how long (in ms) how long function waits for tag to be detected
+  if (nfc.readPassiveTargetID(PN532_MIFARE_ISO14443A, uid, &uidLength, 100)) { //50 in this case indicates how long (in ms) how long function waits for tag to be detected
     scannedUID = "";
     for (uint8_t i = 0; i < uidLength; i++) {
       scannedUID += String(uid[i], HEX); //appending string to hex
