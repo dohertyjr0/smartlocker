@@ -77,8 +77,6 @@ String webApp(){
           .then(data => document.getElementById("rfidUID").innerText = data)
           .catch(error => console.error('Error:', error));
         }
-
-        setInterval(fetchRFID,5000);
     </script>
 </body>
 </html>)rawliteral";
