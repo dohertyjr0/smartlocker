@@ -59,12 +59,12 @@ String webApp(){
         }
 
         function lock(){
-            let startTime = performance.now();
-            fetch('/lock')
-            .then(() => {
-              document.getElementById("lockStatus").innerText = "Locked";
-              lastMoved = performance.now() - startTime;
-              console.log(`Lock Time: ${lastMoved.toFixed(2)} ms`);
+          let startTime = performance.now();
+          fetch('/lock')
+          .then(() => {
+            document.getElementById("lockStatus").innerText = "Locked";
+            lastMoved = performance.now() - startTime;
+            console.log(`Lock Time: ${lastMoved.toFixed(2)} ms`);
             })
             .catch(error => console.error('Error:', error));
         }
