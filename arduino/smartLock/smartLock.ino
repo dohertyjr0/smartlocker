@@ -9,7 +9,7 @@
 WebServer server(80);
 
 const char* SSID = "iPhone 12 Pro";
-const char* PASSWORD= "01234567";
+const char* PASSWORD = "01234567";
 const char* ADMIN = "password";
 
 #define PN532_SDA 21
@@ -30,8 +30,8 @@ byte rowPins[ROWS] = { 15, 2, 4, 23 };
 byte colPins[COLS] = { 17, 25, 26, 33 };
 
 Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
-Adafruit_PN532 nfc(PN532_SDA, PN532_SCL);// passing arguments through Adafruit class
-Servo myServo; //called Servo class and created object, same for keypad and lcd
+Adafruit_PN532 nfc(PN532_SDA, PN532_SCL);  // passing arguments through Adafruit class
+Servo myServo;                             //called Servo class and created object, same for keypad and lcd
 
 rgb_lcd lcd;
 const int LCD_COLS = 16;
@@ -40,18 +40,19 @@ const int LCD_ROWS = 2;
 bool lockedServo = true;
 char enteredCode[5];
 int codeIndex = 0;
-String currentPassword = "1234"; //current password for keypad, can be changed in adminmode
-const String allowedUID = "3463953"; //hardcoded allowed NFC tag
+String currentPassword = "1234";      //current password for keypad, can be changed in adminmode
+const String allowedUID = "3463953";  //hardcoded allowed NFC tag
+String scannedUID = "None";
 
 unsigned long lastUnlockTime = 0;
 unsigned long lastRFIDCheck = 0;
 //unsigned long was used, as "int" is too small to store the length of this programs runtime, i believe 32-33000(33 seconds). Which when calculating in ms ->
 //(runtime of program which can vary...) would result in integer overflow and a crashed program
 void setup() {
-  
+
   Serial.begin(115200);
   WiFi.begin(SSID, PASSWORD);
-    while (WiFi.status() != WL_CONNECTED) {
+  while (WiFi.status() != WL_CONNECTED) {
     delay(1000);
     Serial.println("Connecting to Wi-Fi...");
   }
@@ -60,26 +61,29 @@ void setup() {
   Serial.print("ESP32 IP Address: ");
   Serial.println(WiFi.localIP());
 
-  server.on("/", HTTP_GET, [](){
+  server.on("/", HTTP_GET, []() {
     server.send(200, "text/html", webApp());
   });
 
-  server.on("/admin-login", HTTP_GET, [](){
-    if(server.hasArg("password") && server.arg("password").equalsIgnoreCase(ADMIN)){
+  server.on("/scannedUID", HTTP_GET, []() {
+    server.send(200, "text/html", scannedUID);
+  });
+
+  server.on("/admin-login", HTTP_GET, []() {
+    if (server.hasArg("password") && server.arg("password").equalsIgnoreCase(ADMIN)) {
       server.send(200, "text/plain", "Access Granted");
-    }
-    else{
+    } else {
       server.send(403, "text/plain", "Incorrect Password");
     }
   });
 
-  server.on("/unlock", HTTP_GET, [](){
+  server.on("/unlock", HTTP_GET, []() {
     lockedServo = false;
     unlockDoor();
     server.send(200, "text/plain", "Unlocked");
   });
 
-  server.on("/lock", HTTP_GET, [](){
+  server.on("/lock", HTTP_GET, []() {
     lockedServo = true;
     lockDoor();
     server.send(200, "text/plain", "Locked");
@@ -87,7 +91,7 @@ void setup() {
 
   server.begin();
   Serial.println("Server has started: HTTP");
-  
+
   Wire.begin();
   myServo.attach(27);
 
@@ -106,7 +110,8 @@ void setup() {
     Serial.println("RFID reader not detected!");
     lcd.clear();
     lcd.print("RFID Error!");
-    while (1);  //Using while(1) to ensure loop is infinite until RFID reader is detected
+    while (1)
+      ;  //Using while(1) to ensure loop is infinite until RFID reader is detected
   }
   nfc.SAMConfig();  //Secure Access Module config outside if(), ensures communciation between RFID & ESP32, ONLY when RFID is detected ie. while(1) loop breaks
   Serial.println("RFID reader initialized!");
@@ -130,7 +135,7 @@ void loop() {
   }
   //using built in c "millis()" function to track how long program has been run for
   if (millis() - lastRFIDCheck >= 2500) {
-    lastRFIDCheck = millis(); // by letting LastRFIDcheck = millis() function, it will constantlyy check every 2.5 seconds (2500milliseconds)
+    lastRFIDCheck = millis();  // by letting LastRFIDcheck = millis() function, it will constantlyy check every 2.5 seconds (2500milliseconds)
     checkRFID();
     yield();
   }
