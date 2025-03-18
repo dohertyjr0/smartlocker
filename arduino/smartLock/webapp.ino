@@ -74,7 +74,7 @@ String webApp(){
         function fetchRFID(){
           fetch('/scannedUID')
           .then(response => response.text())
-          .then(data => document.getElementbyId("rfidUID")).innerText = data)
+          .then(data => document.getElementById("rfidUID").innerText = data)
           .catch(error => console.error('Error:', error));
         }
 
