@@ -7,16 +7,30 @@ String webApp(){
     <title>smartlocker</title>
     <style>
         body{
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: Arial, sans-serif;
             text-align: center;
             margin-top: 50px;
+        }
+
+        h1{
+          font-size: 28px;
+        }
+
+        h2{
+          font-size: 22px;
         }
         button{
             background-color: black;
             border: none;
+            border-radius: 5px;
             color: white;
             padding: 15px 32px;
             text-align: center;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover{
+          background-color: red;
         }
     </style>
 </head>
