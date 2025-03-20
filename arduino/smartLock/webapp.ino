@@ -1,5 +1,5 @@
-String webApp(){
-    return R"rawliteral(<!DOCTYPE html>
+String webApp() {
+  return R"rawliteral(<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -47,6 +47,7 @@ String webApp(){
     </div>
 
     <h3>Last RFID Tag: <span id = "rfidUID"> None </span><h3>
+    <h3>Last RFID Tag: <span id = "voltage"> Loading... </span>V<h3>
 
     <script>
         function login(){
@@ -92,7 +93,15 @@ String webApp(){
           .catch(error => console.error('Error:', error));
         }
 
-        setInterval(fetchRFID, 2000); 
+        function fetchVoltage(){
+          fetch('/voltage')
+          .then(response => response.text())
+          .then(data => document.getElementById("voltage").innerText = data)
+          .catch(error => console.error('Error:', error));
+        }
+
+        setInterval(fetchRFID, 1000); 
+        setInterval(fetchVoltage, 1000);
     </script>
 </body>
 </html>)rawliteral";
