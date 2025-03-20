@@ -1,12 +1,15 @@
+#undef CLOSED
+#undef HIGH
 #include <Keypad.h>
 #include <ESP32Servo.h>
 #include <Wire.h>
 #include <Adafruit_PN532.h>
 #include "rgb_lcd.h"
 #include <WiFi.h>
-#include <WebServer.h>
+#include <ESPAsyncWebServer.h>
+#include <AsyncTCP.h>
 
-WebServer server(80);
+AsyncWebServer server(80);
 
 const char* SSID = "HUAWEI-2.4G-ZUSW";
 const char* PASSWORD = "pjMs5P5h";
@@ -61,37 +64,37 @@ void setup() {
   Serial.print("ESP32 IP Address: ");
   Serial.println(WiFi.localIP());
 
-  server.on("/", HTTP_GET, []() {
-    server.send(200, "text/html", webApp());
+  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
+    request -> send(200, "text/html", webApp());
   });
 
-  server.on("/scannedUID", HTTP_GET, []() {
-    server.send(200, "text/plain", scannedUID);
+  server.on("/scannedUID", HTTP_GET, [](AsyncWebServerRequest *request) {
+    request -> send(200, "text/plain", scannedUID);
   });
 
-  server.on("/admin-login", HTTP_GET, []() {
-    if (server.hasArg("password") && server.arg("password").equalsIgnoreCase(ADMIN)) {
-      server.send(200, "text/plain", "Access Granted");
+  server.on("/admin-login", HTTP_GET, [](AsyncWebServerRequest *request) {
+    if (request -> hasParam("password") && request -> getParam("password")->value().equalsIgnoreCase(ADMIN)) {
+      request -> send(200, "text/plain", "Access Granted");
     } else {
-      server.send(403, "text/plain", "Incorrect Password");
+      request -> send(403, "text/plain", "Incorrect Password");
     }
   });
 
-  server.on("/unlock", HTTP_GET, []() {
+  server.on("/unlock", HTTP_GET, [](AsyncWebServerRequest *request) {
     lockedServo = false;
     unlockDoor();
-    server.send(200, "text/plain", "Unlocked");
+    request -> send(200, "text/plain", "Unlocked");
   });
 
-  server.on("/lock", HTTP_GET, []() {
+  server.on("/lock", HTTP_GET, [](AsyncWebServerRequest *request) {
     lockedServo = true;
     lockDoor();
-    server.send(200, "text/plain", "Locked");
+    request -> send(200, "text/plain", "Locked");
   });
 
   server.begin();
   Serial.println("Server has started: HTTP");
-
+//ok
   Wire.begin();
   myServo.attach(27);
 
@@ -123,8 +126,6 @@ void setup() {
 }
 
 void loop() {
-
-  server.handleClient();
 
   char key = keypad.getKey();
   if (key) {
