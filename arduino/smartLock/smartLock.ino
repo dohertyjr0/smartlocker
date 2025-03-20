@@ -94,7 +94,7 @@ void setup() {
 
   server.begin();
   Serial.println("Server has started: HTTP");
-
+//ok
   Wire.begin();
   myServo.attach(27);
 
