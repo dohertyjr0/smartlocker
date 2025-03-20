@@ -54,7 +54,7 @@ const float R2 = 13000;
 const float Vref = 3.3;
 const int ADC = 4095;
 
-float readVoltage = 0;
+float readVoltage = 0.0;
 
 unsigned long lastUnlockTime = 0;
 unsigned long lastRFIDCheck = 0;
@@ -77,8 +77,8 @@ void setup() {
     request->send(200, "text/html", webApp());
   });
 
-  server.on("/scannedUID", HTTP_GET, [](AsyncWebServerRequest *request) {
-    request->send(200, "text/plain", (readVoltage, 2));
+  server.on("/voltage", HTTP_GET, [](AsyncWebServerRequest *request) {
+    request->send(200, "text/plain", String(readVoltage, 2));
   });
 
   server.on("/scannedUID", HTTP_GET, [](AsyncWebServerRequest *request) {
@@ -144,7 +144,7 @@ void loop() {
   float voltage = (voltageValue / (float)ADC) * Vref;
   float voltageInput = voltage / (R2 / (R1 + R2));
 
-  voltageRead = voltageInput;
+  readVoltage = voltageInput;
 
   Serial.print("ADC Value: ");
   Serial.print(voltage);
