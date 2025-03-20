@@ -10,6 +10,7 @@
 #include <AsyncTCP.h>
 
 AsyncWebServer server(80);
+//using ssh for github rather than PAT - test commit
 
 const char* SSID = "HUAWEI-2.4G-ZUSW";
 const char* PASSWORD = "pjMs5P5h";
