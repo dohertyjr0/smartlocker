@@ -48,6 +48,12 @@ String currentPassword = "1234";      //current password for keypad, can be chan
 const String allowedUID = "3463953";  //hardcoded allowed NFC tag
 String scannedUID = "None";
 
+const int voltagePin = 34;
+const float R1 = 22000;
+const float R2 = 13000;
+const float Vref = 3.3;
+const int ADC = 4095;
+
 unsigned long lastUnlockTime = 0;
 unsigned long lastRFIDCheck = 0;
 //unsigned long was used, as "int" is too small to store the length of this programs runtime, i believe 32-33000(33 seconds). Which when calculating in ms ->
@@ -128,6 +134,19 @@ void setup() {
 
 void loop() {
 
+  int voltageValue = analogRead(voltagePin);
+  float voltage = (voltageValue / (float)ADC) * Vref;
+  float voltageInput = voltage / (R2 / (R1 + R2));
+
+  Serial.print("ADC Value: ");
+  Serial.print(voltage);
+  Serial.print("Measure Voltage: ");
+  Serial.print(voltage, 2);
+  Serial.print("Actual Voltage: ");
+  Serial.print(voltageInput);
+  Serial.println("V");
+
+  delay(1000);
   char key = keypad.getKey();
   if (key) {
     Serial.print("Key Pressed: ");
