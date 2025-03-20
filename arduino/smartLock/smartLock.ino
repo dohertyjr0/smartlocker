@@ -12,9 +12,9 @@
 AsyncWebServer server(80);
 //using ssh for github rather than PAT - test commit
 
-const char* SSID = "HUAWEI-2.4G-ZUSW";
-const char* PASSWORD = "pjMs5P5h";
-const char* ADMIN = "password";
+const char *SSID = "HUAWEI-2.4G-ZUSW";
+const char *PASSWORD = "pjMs5P5h";
+const char *ADMIN = "password";
 
 #define PN532_SDA 21
 #define PN532_SCL 22
@@ -54,6 +54,8 @@ const float R2 = 13000;
 const float Vref = 3.3;
 const int ADC = 4095;
 
+float readVoltage = 0;
+
 unsigned long lastUnlockTime = 0;
 unsigned long lastRFIDCheck = 0;
 //unsigned long was used, as "int" is too small to store the length of this programs runtime, i believe 32-33000(33 seconds). Which when calculating in ms ->
@@ -72,36 +74,40 @@ void setup() {
   Serial.println(WiFi.localIP());
 
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
-    request -> send(200, "text/html", webApp());
+    request->send(200, "text/html", webApp());
   });
 
   server.on("/scannedUID", HTTP_GET, [](AsyncWebServerRequest *request) {
-    request -> send(200, "text/plain", scannedUID);
+    request->send(200, "text/plain", (readVoltage, 2));
+  });
+
+  server.on("/scannedUID", HTTP_GET, [](AsyncWebServerRequest *request) {
+    request->send(200, "text/plain", scannedUID);
   });
 
   server.on("/admin-login", HTTP_GET, [](AsyncWebServerRequest *request) {
-    if (request -> hasParam("password") && request -> getParam("password")->value().equalsIgnoreCase(ADMIN)) {
-      request -> send(200, "text/plain", "Access Granted");
+    if (request->hasParam("password") && request->getParam("password")->value().equalsIgnoreCase(ADMIN)) {
+      request->send(200, "text/plain", "Access Granted");
     } else {
-      request -> send(403, "text/plain", "Incorrect Password");
+      request->send(403, "text/plain", "Incorrect Password");
     }
   });
 
   server.on("/unlock", HTTP_GET, [](AsyncWebServerRequest *request) {
     lockedServo = false;
     unlockDoor();
-    request -> send(200, "text/plain", "Unlocked");
+    request->send(200, "text/plain", "Unlocked");
   });
 
   server.on("/lock", HTTP_GET, [](AsyncWebServerRequest *request) {
     lockedServo = true;
     lockDoor();
-    request -> send(200, "text/plain", "Locked");
+    request->send(200, "text/plain", "Locked");
   });
 
   server.begin();
   Serial.println("Server has started: HTTP");
-//ok
+  //ok
   Wire.begin();
   myServo.attach(27);
 
@@ -138,6 +144,8 @@ void loop() {
   float voltage = (voltageValue / (float)ADC) * Vref;
   float voltageInput = voltage / (R2 / (R1 + R2));
 
+  voltageRead = voltageInput;
+
   Serial.print("ADC Value: ");
   Serial.print(voltage);
   Serial.print("Measure Voltage: ");
@@ -167,7 +175,7 @@ void loop() {
   }
 }
 
-void displayLCD(const char* line1, const char* line2) {
+void displayLCD(const char *line1, const char *line2) {
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print(line1);
