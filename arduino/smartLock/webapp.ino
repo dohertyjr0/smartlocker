@@ -12,6 +12,17 @@ String webApp() {
             margin-top: 50px;
         }
 
+        .Main{
+          background-color: #7ea7c2;
+          border-radius: 10px;
+          padding: 30px;
+          width: 90%;
+          max-width: 800px;
+          text-align: center;
+          margin: auto;
+          margin-bottom: 20px;
+        }
+
         h1{
           font-size: 28px;
         }
@@ -32,22 +43,62 @@ String webApp() {
         button:hover{
           background-color: red;
         }
+
+        #control{
+          display: none;
+        }
+
+        #lock{
+          font-weight: bold;
+          color: light-green;
+        }
+
+        #rfidUID{
+          font-size: 18px;
+          font-weight: normal;
+          color: red;
+        }
+
+        #voltage{
+          font-size: 18px;
+          font-weight: normal;
+          color: yellow;
+        }
+
+        .infoBox{
+            background-color: #4c76ad;
+            border-radius: 8px;
+            padding: 20px;
+            margin: auto;
+            max-width: 800px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
     </style>
 </head>
 <body>
+<div class = "Main"> 
     <h1> ESP32 SmartLocker </h1>
     <div id = "loginAdmin">
     <input type="password" id="adm-pw" placeholder="Enter Admin Password">
     <button onclick = "login()">Login</button>
     </div>
-    <div id = "control" style = "display: none;">
-        <h2> Status: <span id="lockStatus">Locked</span></h2>
+    <div id = "control">
+        <h2> Status: <span id="lock">Locked</span></h2>
         <button onclick = "lock()"> Lock Servo </button>
         <button onclick = "unlock()"> Unlock Servo </button>
     </div>
+  </div>
 
-    <h3>Last RFID Tag: <span id = "rfidUID"> None </span><h3>
-    <h3>Last RFID Tag: <span id = "voltage"> Loading... </span>V<h3>
+  <div class = "infoBox">
+    <h3>Last RFID Tag: <span id = "rfidUID"> None </span><h3
+    
+    </div>
+    <div class = "infoBox">
+    <h3>Last Voltage Measured: <span id = "voltage"> None </span><h3>
+    </div>
+
 
     <script>
         function login(){
@@ -68,7 +119,7 @@ String webApp() {
           let startTime = performance.now();
           fetch('/unlock')
           .then(() => {
-            document.getElementById("lockStatus").innerText = "Unlocked";
+            document.getElementById("lock").innerText = "Unlocked";
             lastMoved = performance.now() - startTime;
             console.log(`Unlock Time: ${lastMoved.toFixed(2)} ms`);
           })
@@ -79,7 +130,7 @@ String webApp() {
           let startTime = performance.now();
           fetch('/lock')
           .then(() => {
-            document.getElementById("lockStatus").innerText = "Locked";
+            document.getElementById("lock").innerText = "Locked";
             lastMoved = performance.now() - startTime;
             console.log(`Lock Time: ${lastMoved.toFixed(2)} ms`);
             })
