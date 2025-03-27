@@ -26,7 +26,7 @@ const byte ROWS = 4;
 const byte COLS = 4;
 char keys[ROWS][COLS] = {
   { '1', '4', '7', 'F' },
-  { '2', '5', '6', 'E' },
+  { '2', '5', '8', 'E' },
   { '3', '6', '9', 'D' },
   { 'A', '0', 'B', 'C' }
 };
@@ -146,19 +146,17 @@ void loop() {
 
   readVoltage = voltageInput;
 
-  Serial.print("ADC Value: ");
+ /* Serial.print("ADC Value: ");
   Serial.print(voltage);
   Serial.print("Measure Voltage: ");
   Serial.print(voltage, 2);
   Serial.print("Actual Voltage: ");
   Serial.print(voltageInput);
-  Serial.println("V");
+  Serial.println("V"); */
 
-  delay(1000);
+  delay(20);
   char key = keypad.getKey();
   if (key) {
-    Serial.print("Key Pressed: ");
-    Serial.println(key);
     handleKeypadInput(key);
     yield();
   }
