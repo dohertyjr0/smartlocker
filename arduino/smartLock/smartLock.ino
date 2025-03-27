@@ -18,20 +18,20 @@ const char *ADMIN = "password";
 
 #define PN532_SDA 21
 #define PN532_SCL 22
-#define RED_LED_PIN 13
-#define WHITE_LED_PIN 12
-#define YELLOW_LED_PIN 14
+#define RED_LED_PIN 17
+#define WHITE_LED_PIN 18
+#define YELLOW_LED_PIN 19
 
 const byte ROWS = 4;
 const byte COLS = 4;
 char keys[ROWS][COLS] = {
   { '1', '4', '7', 'F' },
-  { '2', '5', '6', 'E' },
+  { '2', '5', '8', 'E' },
   { '3', '6', '9', 'D' },
   { 'A', '0', 'B', 'C' }
 };
-byte rowPins[ROWS] = { 15, 2, 4, 23 };
-byte colPins[COLS] = { 17, 25, 26, 33 };
+byte rowPins[ROWS] = { 13, 32, 4, 14 };
+byte colPins[COLS] = { 27, 26, 25, 33 };
 
 Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 Adafruit_PN532 nfc(PN532_SDA, PN532_SCL);  // passing arguments through Adafruit class
@@ -109,7 +109,7 @@ void setup() {
   Serial.println("Server has started: HTTP");
   //ok
   Wire.begin();
-  myServo.attach(27);
+  myServo.attach(16);
 
   pinMode(RED_LED_PIN, OUTPUT);
   pinMode(WHITE_LED_PIN, OUTPUT);
@@ -146,19 +146,17 @@ void loop() {
 
   readVoltage = voltageInput;
 
-  Serial.print("ADC Value: ");
+ /* Serial.print("ADC Value: ");
   Serial.print(voltage);
   Serial.print("Measure Voltage: ");
   Serial.print(voltage, 2);
   Serial.print("Actual Voltage: ");
   Serial.print(voltageInput);
-  Serial.println("V");
+  Serial.println("V"); */
 
-  delay(1000);
+  delay(20);
   char key = keypad.getKey();
   if (key) {
-    Serial.print("Key Pressed: ");
-    Serial.println(key);
     handleKeypadInput(key);
     yield();
   }
@@ -193,7 +191,7 @@ void unlockDoor() {
 
 void lockDoor() {
   lockedServo = true;
-  myServo.write(90);
+  myServo.write(180);
   digitalWrite(RED_LED_PIN, HIGH);
   digitalWrite(WHITE_LED_PIN, LOW);
   digitalWrite(YELLOW_LED_PIN, LOW);
