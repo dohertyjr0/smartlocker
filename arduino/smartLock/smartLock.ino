@@ -18,9 +18,9 @@ const char *ADMIN = "password";
 
 #define PN532_SDA 21
 #define PN532_SCL 22
-#define RED_LED_PIN 18
-#define WHITE_LED_PIN 5
-#define YELLOW_LED_PIN 17
+#define RED_LED_PIN 17
+#define WHITE_LED_PIN 18
+#define YELLOW_LED_PIN 19
 
 const byte ROWS = 4;
 const byte COLS = 4;
@@ -191,7 +191,7 @@ void unlockDoor() {
 
 void lockDoor() {
   lockedServo = true;
-  myServo.write(90);
+  myServo.write(180);
   digitalWrite(RED_LED_PIN, HIGH);
   digitalWrite(WHITE_LED_PIN, LOW);
   digitalWrite(YELLOW_LED_PIN, LOW);
