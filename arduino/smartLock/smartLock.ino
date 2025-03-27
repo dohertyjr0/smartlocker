@@ -12,26 +12,26 @@
 AsyncWebServer server(80);
 //using ssh for github rather than PAT - test commit
 
-const char* SSID = "HUAWEI-2.4G-ZUSW";
-const char* PASSWORD = "pjMs5P5h";
-const char* ADMIN = "password";
+const char *SSID = "HUAWEI-2.4G-ZUSW";
+const char *PASSWORD = "pjMs5P5h";
+const char *ADMIN = "password";
 
 #define PN532_SDA 21
 #define PN532_SCL 22
-#define RED_LED_PIN 13
-#define WHITE_LED_PIN 12
-#define YELLOW_LED_PIN 14
+#define RED_LED_PIN 17
+#define WHITE_LED_PIN 18
+#define YELLOW_LED_PIN 19
 
 const byte ROWS = 4;
 const byte COLS = 4;
 char keys[ROWS][COLS] = {
   { '1', '4', '7', 'F' },
-  { '2', '5', '6', 'E' },
+  { '2', '5', '8', 'E' },
   { '3', '6', '9', 'D' },
   { 'A', '0', 'B', 'C' }
 };
-byte rowPins[ROWS] = { 15, 2, 4, 23 };
-byte colPins[COLS] = { 17, 25, 26, 33 };
+byte rowPins[ROWS] = { 13, 32, 4, 14 };
+byte colPins[COLS] = { 27, 26, 25, 33 };
 
 Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 Adafruit_PN532 nfc(PN532_SDA, PN532_SCL);  // passing arguments through Adafruit class
@@ -47,6 +47,14 @@ int codeIndex = 0;
 String currentPassword = "1234";      //current password for keypad, can be changed in adminmode
 const String allowedUID = "3463953";  //hardcoded allowed NFC tag
 String scannedUID = "None";
+
+const int voltagePin = 34;
+const float R1 = 22000;
+const float R2 = 13000;
+const float Vref = 3.3;
+const int ADC = 4095;
+
+float readVoltage = 0.0;
 
 unsigned long lastUnlockTime = 0;
 unsigned long lastRFIDCheck = 0;
@@ -66,38 +74,42 @@ void setup() {
   Serial.println(WiFi.localIP());
 
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
-    request -> send(200, "text/html", webApp());
+    request->send(200, "text/html", webApp());
+  });
+
+  server.on("/voltage", HTTP_GET, [](AsyncWebServerRequest *request) {
+    request->send(200, "text/plain", String(readVoltage, 2));
   });
 
   server.on("/scannedUID", HTTP_GET, [](AsyncWebServerRequest *request) {
-    request -> send(200, "text/plain", scannedUID);
+    request->send(200, "text/plain", scannedUID);
   });
 
   server.on("/admin-login", HTTP_GET, [](AsyncWebServerRequest *request) {
-    if (request -> hasParam("password") && request -> getParam("password")->value().equalsIgnoreCase(ADMIN)) {
-      request -> send(200, "text/plain", "Access Granted");
+    if (request->hasParam("password") && request->getParam("password")->value().equalsIgnoreCase(ADMIN)) {
+      request->send(200, "text/plain", "Access Granted");
     } else {
-      request -> send(403, "text/plain", "Incorrect Password");
+      request->send(403, "text/plain", "Incorrect Password");
     }
   });
 
   server.on("/unlock", HTTP_GET, [](AsyncWebServerRequest *request) {
     lockedServo = false;
     unlockDoor();
-    request -> send(200, "text/plain", "Unlocked");
+    request->send(200, "text/plain", "Unlocked");
   });
 
   server.on("/lock", HTTP_GET, [](AsyncWebServerRequest *request) {
     lockedServo = true;
     lockDoor();
-    request -> send(200, "text/plain", "Locked");
+    request->send(200, "text/plain", "Locked");
   });
 
   server.begin();
   Serial.println("Server has started: HTTP");
-//ok
+  //ok
   Wire.begin();
-  myServo.attach(27);
+  myServo.attach(16);
 
   pinMode(RED_LED_PIN, OUTPUT);
   pinMode(WHITE_LED_PIN, OUTPUT);
@@ -128,10 +140,23 @@ void setup() {
 
 void loop() {
 
+  int voltageValue = analogRead(voltagePin);
+  float voltage = (voltageValue / (float)ADC) * Vref;
+  float voltageInput = voltage / (R2 / (R1 + R2));
+
+  readVoltage = voltageInput;
+
+ /* Serial.print("ADC Value: ");
+  Serial.print(voltage);
+  Serial.print("Measure Voltage: ");
+  Serial.print(voltage, 2);
+  Serial.print("Actual Voltage: ");
+  Serial.print(voltageInput);
+  Serial.println("V"); */
+
+  delay(20);
   char key = keypad.getKey();
   if (key) {
-    Serial.print("Key Pressed: ");
-    Serial.println(key);
     handleKeypadInput(key);
     yield();
   }
@@ -148,7 +173,7 @@ void loop() {
   }
 }
 
-void displayLCD(const char* line1, const char* line2) {
+void displayLCD(const char *line1, const char *line2) {
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print(line1);
@@ -166,7 +191,7 @@ void unlockDoor() {
 
 void lockDoor() {
   lockedServo = true;
-  myServo.write(90);
+  myServo.write(180);
   digitalWrite(RED_LED_PIN, HIGH);
   digitalWrite(WHITE_LED_PIN, LOW);
   digitalWrite(YELLOW_LED_PIN, LOW);
