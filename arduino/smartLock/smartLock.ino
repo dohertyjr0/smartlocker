@@ -77,7 +77,7 @@ void setup() {
     request->send(200, "text/html", webApp());
   });
 
-  server.on("/scannedUID", HTTP_GET, [](AsyncWebServerRequest *request) {
+  server.on("/voltage", HTTP_GET, [](AsyncWebServerRequest *request) {
     request->send(200, "text/plain", String(readVoltage, 2));
   });
 
