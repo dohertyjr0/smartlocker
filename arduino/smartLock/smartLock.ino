@@ -12,15 +12,15 @@
 AsyncWebServer server(80);
 //using ssh for github rather than PAT - test commit
 
-const char *SSID = "HUAWEI-2.4G-ZUSW";
-const char *PASSWORD = "pjMs5P5h";
+const char *SSID = "iPhone 12 Pro";
+const char *PASSWORD = "01234567";
 const char *ADMIN = "password";
 
 #define PN532_SDA 21
 #define PN532_SCL 22
-#define RED_LED_PIN 13
-#define WHITE_LED_PIN 12
-#define YELLOW_LED_PIN 14
+#define RED_LED_PIN 32
+#define WHITE_LED_PIN 33
+#define YELLOW_LED_PIN 35
 
 const byte ROWS = 4;
 const byte COLS = 4;
@@ -30,8 +30,8 @@ char keys[ROWS][COLS] = {
   { '3', '6', '9', 'D' },
   { 'A', '0', 'B', 'C' }
 };
-byte rowPins[ROWS] = { 15, 2, 4, 23 };
-byte colPins[COLS] = { 17, 25, 26, 33 };
+byte rowPins[ROWS] = { 19, 18, 5, 17};
+byte colPins[COLS] = { 16, 4, 2, 15};
 
 Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 Adafruit_PN532 nfc(PN532_SDA, PN532_SCL);  // passing arguments through Adafruit class
