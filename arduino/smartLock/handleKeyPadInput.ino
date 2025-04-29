@@ -2,6 +2,14 @@ void handleKeypadInput(char key) {
   Serial.print("Key Pressed: ");
   Serial.println(key);
 
+  if(key == 'A'){
+    lockDoor();
+    displayLCD("Locked", "Manual Override");
+    memset(enteredCode, 0, sizeof(enteredCode));
+    codeIndex = 0;
+    return;
+  }
+  
   if (key == 'A' && codeIndex > 0) { //if 'A' key is pressed AND the current key position is greater than 0 ie. 1 key
     enteredCode[codeIndex] = '\0'; // adds terminate string
     Serial.print("Entered PIN: ");

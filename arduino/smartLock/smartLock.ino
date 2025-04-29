@@ -1,5 +1,3 @@
-#undef CLOSED
-#undef HIGH
 #include <Keypad.h>
 #include <ESP32Servo.h>
 #include <Wire.h>
@@ -48,13 +46,13 @@ String currentPassword = "1234";      //current password for keypad, can be chan
 const String allowedUID = "3463953";  //hardcoded allowed NFC tag
 String scannedUID = "None";
 
-const int voltagePin = 34;
+/*const int voltagePin = 34;
 const float R1 = 22000;
 const float R2 = 13000;
 const float Vref = 3.3;
-const int ADC = 4095;
+const int ADC = 4095;*/
 
-float readVoltage = 0.0;
+//float readVoltage = 0.0;
 
 unsigned long lastUnlockTime = 0;
 unsigned long lastRFIDCheck = 0;
@@ -77,9 +75,9 @@ void setup() {
     request->send(200, "text/html", webApp());
   });
 
-  server.on("/voltage", HTTP_GET, [](AsyncWebServerRequest *request) {
+   /*server.on("/voltage", HTTP_GET, [](AsyncWebServerRequest *request) {
     request->send(200, "text/plain", String(readVoltage, 2));
-  });
+  });*/
 
   server.on("/scannedUID", HTTP_GET, [](AsyncWebServerRequest *request) {
     request->send(200, "text/plain", scannedUID);
@@ -140,11 +138,11 @@ void setup() {
 
 void loop() {
 
-  int voltageValue = analogRead(voltagePin);
+  /*int voltageValue = analogRead(voltagePin);
   float voltage = (voltageValue / (float)ADC) * Vref;
   float voltageInput = voltage / (R2 / (R1 + R2));
 
-  readVoltage = voltageInput;
+  readVoltage = voltageInput;*/
 
  /* Serial.print("ADC Value: ");
   Serial.print(voltage);
