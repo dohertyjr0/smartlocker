@@ -16,9 +16,8 @@ const char *ADMIN = "password";
 
 #define PN532_SDA 21
 #define PN532_SCL 22
-#define RED_LED_PIN 17
-#define WHITE_LED_PIN 18
-#define YELLOW_LED_PIN 19
+#define RED_LED 17
+#define YELLOW_LED 19
 
 const byte ROWS = 4;
 const byte COLS = 4;
@@ -110,7 +109,6 @@ void setup() {
   myServo.attach(16);
 
   pinMode(RED_LED_PIN, OUTPUT);
-  pinMode(WHITE_LED_PIN, OUTPUT);
   pinMode(YELLOW_LED_PIN, OUTPUT);
 
   lockDoor();
@@ -131,9 +129,7 @@ void setup() {
   Serial.println("RFID reader initialized!");
   lcd.setCursor(0, 1);
   lcd.print("RFID Ready!");
-  digitalWrite(RED_LED_PIN, LOW);
-  digitalWrite(WHITE_LED_PIN, LOW);
-  digitalWrite(YELLOW_LED_PIN, LOW);
+  digitalWrite(RED_LED_PIN, HIGH);
 }
 
 void loop() {
@@ -183,14 +179,12 @@ void unlockDoor() {
   lockedServo = false;
   myServo.write(0);
   digitalWrite(RED_LED_PIN, LOW);
-  digitalWrite(WHITE_LED_PIN, HIGH);
-  digitalWrite(YELLOW_LED_PIN, LOW);
+  digitalWrite(YELLOW_LED_PIN, HIGH);
 }
 
 void lockDoor() {
   lockedServo = true;
   myServo.write(180);
   digitalWrite(RED_LED_PIN, HIGH);
-  digitalWrite(WHITE_LED_PIN, LOW);
   digitalWrite(YELLOW_LED_PIN, LOW);
 }

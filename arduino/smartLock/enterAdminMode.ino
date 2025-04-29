@@ -3,8 +3,7 @@ void enterAdminMode() {
 
   while (true) {
     displayLCD("Admin Mode", "1:Change PIN");
-    digitalWrite(RED_LED_PIN, LOW);   
-    digitalWrite(WHITE_LED_PIN, LOW);  
+    digitalWrite(RED_LED_PIN, LOW);    
     digitalWrite(YELLOW_LED_PIN, HIGH); 
     adminKey = keypad.getKey(); // stores keypresses in adminKey
 
