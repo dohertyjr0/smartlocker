@@ -94,10 +94,10 @@ String webApp() {
   <div class = "infoBox">
     <h3>Last RFID Tag: <span id = "rfidUID"> None </span><h3
     
-    </div>
+    /*</div>
     <div class = "infoBox">
     <h3>Last Voltage Measured: <span id = "voltage"> None </span><h3>
-    </div>
+    </div>*/
 
 
     <script>
@@ -144,15 +144,15 @@ String webApp() {
           .catch(error => console.error('Error:', error));
         }
 
-        function fetchVoltage(){
+        /*function fetchVoltage(){
           fetch('/voltage')
           .then(response => response.text())
           .then(data => document.getElementById("voltage").innerText = data)
           .catch(error => console.error('Error:', error));
-        }
+        }*/
 
         setInterval(fetchRFID, 1000); 
-        setInterval(fetchVoltage, 1000);
+        //setInterval(fetchVoltage, 1000);
     </script>
 </body>
 </html>)rawliteral";
