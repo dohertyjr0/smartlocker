@@ -6,6 +6,7 @@
 #include <WiFi.h>
 #include <ESPAsyncWebServer.h>
 #include <AsyncTCP.h>
+#include "esp_task_wdt.h"
 
 AsyncWebServer server(80);
 //using ssh for github rather than PAT - test commit
@@ -61,6 +62,9 @@ unsigned long lastRFIDCheck = 0;
 void setup() {
 
   Serial.begin(115200);
+  esp_task_wdt_init(10, true);
+  esp_task_wdt_add(NULL);
+
   WiFi.begin(SSID, PASSWORD);
   while (WiFi.status() != WL_CONNECTED) {
     delay(1000);
@@ -71,6 +75,7 @@ void setup() {
   Serial.print("ESP32 IP Address: ");
   Serial.println(WiFi.localIP());
 
+  //delay(12000); Used to test how watchdog timer responds and for demo
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
     request->send(200, "text/html", webApp());
   });
@@ -137,6 +142,8 @@ void setup() {
 }
 
 void loop() {
+
+  esp_task_wdt_reset();//activates watchdog timer on esp32
 
   /*int voltageValue = analogRead(voltagePin);
   float voltage = (voltageValue / (float)ADC) * Vref;
