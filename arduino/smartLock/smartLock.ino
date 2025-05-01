@@ -11,9 +11,10 @@
 AsyncWebServer server(80);
 //using ssh for github rather than PAT - test commit
 
-const char *SSID = "HUAWEI-2.4G-ZUSW";
-const char *PASSWORD = "pjMs5P5h";
+const char *SSID = "iPhone XR";
+const char *PASSWORD = "01234567";
 const char *ADMIN = "password";
+
 
 #define PN532_SDA 21
 #define PN532_SCL 22
@@ -23,13 +24,13 @@ const char *ADMIN = "password";
 const byte ROWS = 4;
 const byte COLS = 4;
 char keys[ROWS][COLS] = {
-  { '1', '4', '7', 'F' },
-  { '2', '5', '8', 'E' },
-  { '3', '6', '9', 'D' },
+  { '1', '2', '3', 'F' },
+  { '4', '5', '6', 'E' },
+  { '7', '8', '9', 'D' },
   { 'A', '0', 'B', 'C' }
 };
-byte rowPins[ROWS] = { 13, 32, 4, 14 };
-byte colPins[COLS] = { 27, 26, 25, 33 };
+byte rowPins[ROWS] = { 27, 26, 25, 33 };
+byte colPins[COLS] = { 13, 32, 4, 14 };
 
 Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 Adafruit_PN532 nfc(PN532_SDA, PN532_SCL);  // passing arguments through Adafruit class
@@ -42,7 +43,8 @@ const int LCD_ROWS = 2;
 bool lockedServo = true;
 char enteredCode[5];
 int codeIndex = 0;
-String currentPassword = "1234";      //current password for keypad, can be changed in adminmode
+String currentPassword = "1234";    
+const String adminPassword = "0000";  //current password for keypad, can be changed in adminmode
 const String allowedUID = "3463953";  //hardcoded allowed NFC tag
 String scannedUID = "None";
 
@@ -113,8 +115,8 @@ void setup() {
   Wire.begin();
   myServo.attach(16);
 
-  pinMode(RED_LED_PIN, OUTPUT);
-  pinMode(YELLOW_LED_PIN, OUTPUT);
+  pinMode(RED_LED, OUTPUT);
+  pinMode(YELLOW_LED, OUTPUT);
 
   lockDoor();
 
@@ -134,12 +136,12 @@ void setup() {
   Serial.println("RFID reader initialized!");
   lcd.setCursor(0, 1);
   lcd.print("RFID Ready!");
-  digitalWrite(RED_LED_PIN, HIGH);
+  digitalWrite(RED_LED, HIGH);
 }
 
 void loop() {
 
-  esp_task_wdt_reset();//activates watchdog timer on esp32
+  esp_task_wdt_reset();
 
   /*int voltageValue = analogRead(voltagePin);
   float voltage = (voltageValue / (float)ADC) * Vref;
@@ -185,13 +187,13 @@ void displayLCD(const char *line1, const char *line2) {
 void unlockDoor() {
   lockedServo = false;
   myServo.write(0);
-  digitalWrite(RED_LED_PIN, LOW);
-  digitalWrite(YELLOW_LED_PIN, HIGH);
+  digitalWrite(RED_LED, LOW);
+  digitalWrite(YELLOW_LED, HIGH);
 }
 
 void lockDoor() {
   lockedServo = true;
   myServo.write(180);
-  digitalWrite(RED_LED_PIN, HIGH);
-  digitalWrite(YELLOW_LED_PIN, LOW);
+  digitalWrite(RED_LED, HIGH);
+  digitalWrite(YELLOW_LED, LOW);
 }

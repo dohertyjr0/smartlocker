@@ -1,4 +1,5 @@
 void changePassword() {
+  int i;
   displayLCD("Enter New PIN", "");
   String newPassword = ""; //since "String" is techincally an object, was able to use .length() method 
 
@@ -12,13 +13,12 @@ void changePassword() {
   }
 
   currentPassword = newPassword; //stores our new password in a new string
+  for(i=0;i<6; i++){
+    digitalWrite(YELLOW_LED, HIGH); 
+    delay(100);
+    digitalWrite(YELLOW_LED, LOW);
+    delay(100); 
+  }
   displayLCD("PIN Changed", ""); 
-  digitalWrite(YELLOW_LED_PIN, HIGH); 
-  delay(1000);
-  digitalWrite(YELLOW_LED_PIN, LOW);
-  delay(1000); 
-  digitalWrite(YELLOW_LED_PIN, HIGH); 
-  delay(1000);
-  digitalWrite(YELLOW_LED_PIN, LOW);
   lockDoor(); 
 }

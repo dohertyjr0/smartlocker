@@ -35,7 +35,11 @@ void handleKeypadInput(char key) {
           unlockDoor();
           displayLCD("Unlocked", "Welcome");
           delay(3000);
-        } else {
+        }
+        else if(entered == adminPassword){
+          enterAdminMode();
+        }
+         else {
           displayLCD("Wrong PIN", "Try Again");
           delay(2000);
         }
