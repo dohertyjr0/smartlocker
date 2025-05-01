@@ -92,13 +92,12 @@ String webApp() {
   </div>
 
   <div class = "infoBox">
-    <h3>Last RFID Tag: <span id = "rfidUID"> None </span><h3
+    <h3>Last RFID Tag: <span id = "rfidUID"> None </span></h3>
     
     /*</div>
     <div class = "infoBox">
     <h3>Last Voltage Measured: <span id = "voltage"> None </span><h3>
     </div>*/
-
 
     <script>
         function login(){
