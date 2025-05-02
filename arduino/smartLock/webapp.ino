@@ -103,7 +103,7 @@ String webApp() {
         function login(){
             const password = document.getElementById('adm-pw').value;
             
-            fetch(`/admin-login?password=${encodeURIComponent(password)}`)
+            fetch("/admin-login?password=" + encodeURIComponent(password))
             .then(response => response.text())
             .then (data => {
               if(data.includes("Access Granted")){
@@ -120,7 +120,7 @@ String webApp() {
           .then(() => {
             document.getElementById("lock").innerText = "Unlocked";
             lastMoved = performance.now() - startTime;
-            console.log(`Unlock Time: ${lastMoved.toFixed(2)} ms`);
+            console.log("Unlock Time: " + lastMoved.toFixed(2) + "ms");
           })
           .catch(error => console.error('Error:', error));
         }
@@ -131,7 +131,7 @@ String webApp() {
           .then(() => {
             document.getElementById("lock").innerText = "Locked";
             lastMoved = performance.now() - startTime;
-            console.log(`Lock Time: ${lastMoved.toFixed(2)} ms`);
+            console.log("Lock Time: " + lastMoved.toFixed(2)+  "ms");
             })
             .catch(error => console.error('Error:', error));
         }
